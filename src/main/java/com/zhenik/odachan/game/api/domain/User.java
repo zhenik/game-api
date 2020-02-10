@@ -3,6 +3,8 @@ package com.zhenik.odachan.game.api.domain;
 import com.zhenik.odachan.game.api.domain.enums.UserRole;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import io.quarkus.mongodb.panache.MongoEntity;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 
@@ -19,7 +21,13 @@ public class User extends BaseMongoEntity {
     user.setName(userSaveCommand.getName());
     user.setEmail(userSaveCommand.getEmail());
     user.setRole(userSaveCommand.getRole());
+    user.setUpdatedAt(LocalDateTime.now());
+    user.setCreatedAt(LocalDateTime.now());
     return user;
+  }
+
+  public static Optional<User> findByEmail(String email) {
+    return find("email", email).firstResultOptional();
   }
 
   public String getName() { return name; }
