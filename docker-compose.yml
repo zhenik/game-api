@@ -5,6 +5,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
-      MONGO_INITDB_DATABASE: content
+      MONGO_INITDB_DATABASE: app
     ports:
     - 27017:27017
