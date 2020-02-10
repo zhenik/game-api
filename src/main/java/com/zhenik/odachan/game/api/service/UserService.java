@@ -21,4 +21,12 @@ public class UserService {
   public List<User> findAll() {
     return userRepository.listAll();
   }
+
+  public User findByEmail(String email) {
+      return User.find("email", email).singleResult();
+  }
+
+  public Long deleteByEmail(String email) {
+    return User.delete("email", email);
+  }
 }

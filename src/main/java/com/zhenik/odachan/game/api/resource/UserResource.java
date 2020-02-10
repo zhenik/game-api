@@ -16,13 +16,12 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/user")
+@Path("/users")
 @Produces(value = MediaType.APPLICATION_JSON)
 @Consumes(value = MediaType.APPLICATION_JSON)
 public class UserResource {
 
   private UserService userService;
-
   public UserResource(UserService userService) {
     this.userService = userService;
   }
@@ -38,31 +37,23 @@ public class UserResource {
   }
 
   @GET
-  @Path("/{id}")
-  public User findOne(@PathParam("id") String id) {
-    return null; // TODO
+  @Path("/{email}")
+  public User findByEmail(@PathParam("email") String email) {
+    return userService.findByEmail(email);
   }
 
   @DELETE
-  @Path("/{id}")
-  public void deleteOne(@PathParam("id") String id) {
-    // TODO
-  }
-
-  @GET
-  @Path("/{email}")
-  public User findByEmail(@PathParam("email") String email) {
-    return User.find("email", email).singleResult();
+  public Response deleteByEmail(UserEmailRole projection) {
+    Long deleted = userService.deleteByEmail(projection.email);
+    return Response.noContent().entity(deleted).build();
   }
 
   @POST
-  @Path("/status")
+  @Path("/role")
   public Response status(UserEmailRole projection) {
     System.out.println(projection);
-
     Optional<UserEmailRole> userMaybe =
         User.find("email", projection.email).project(UserEmailRole.class).firstResultOptional();
-
     if (userMaybe.isPresent()) {
       return Response.ok().entity(userMaybe.get()).build();
     } else {

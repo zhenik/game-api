@@ -20,7 +20,7 @@ public class UserEmailRole {
   @Override public String toString() {
     return "{" +
         "\"email\":"    +"\""+ email + "\"" +
-        ", \"role:\""   +"\""+ role + "\"" +
+        ", \"role\":"   +"\""+ role + "\"" +
         "}";
   }
 }
