@@ -1,7 +1,6 @@
-package com.zhenik.odachan.game.api.resource;
+package com.zhenik.odachan.game.api.resource.user;
 
-import com.zhenik.odachan.game.api.resource.projection.UserEmailRole;
-import com.zhenik.odachan.game.api.domain.User;
+import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import com.zhenik.odachan.game.api.service.UserService;
 import java.util.List;

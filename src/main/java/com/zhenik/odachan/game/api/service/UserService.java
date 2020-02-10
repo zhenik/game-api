@@ -1,6 +1,6 @@
 package com.zhenik.odachan.game.api.service;
 
-import com.zhenik.odachan.game.api.domain.User;
+import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import com.zhenik.odachan.game.api.repository.UserRepository;
 import java.util.List;

@@ -1,9 +1,10 @@
-package com.zhenik.odachan.game.api.domain;
+package com.zhenik.odachan.game.api.domain.user;
 
-import com.zhenik.odachan.game.api.domain.enums.UserRole;
+import com.zhenik.odachan.game.api.domain.BaseMongoEntity;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import io.quarkus.mongodb.panache.MongoEntity;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
@@ -17,7 +18,9 @@ public class User extends BaseMongoEntity {
 
   public static User of(UserSaveCommand userSaveCommand){
     User user = new User();
-    user.setCollectionId(userSaveCommand.getCollectionId());
+    user.setCollectionId(Objects.nonNull(userSaveCommand.getCollectionId())
+        ? new ObjectId(String.valueOf(userSaveCommand.getCollectionId()))
+        : null);
     user.setName(userSaveCommand.getName());
     user.setEmail(userSaveCommand.getEmail());
     user.setRole(userSaveCommand.getRole());

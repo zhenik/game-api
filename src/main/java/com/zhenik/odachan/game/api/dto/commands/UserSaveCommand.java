@@ -1,6 +1,6 @@
 package com.zhenik.odachan.game.api.dto.commands;
 
-import com.zhenik.odachan.game.api.domain.enums.UserRole;
+import com.zhenik.odachan.game.api.domain.user.UserRole;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import org.bson.types.ObjectId;

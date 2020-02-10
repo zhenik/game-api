@@ -1,7 +1,7 @@
-package com.zhenik.odachan.game.api.resource.projection;
+package com.zhenik.odachan.game.api.resource.user;
 
-import com.zhenik.odachan.game.api.domain.User;
-import com.zhenik.odachan.game.api.domain.enums.UserRole;
+import com.zhenik.odachan.game.api.domain.user.User;
+import com.zhenik.odachan.game.api.domain.user.UserRole;
 import io.quarkus.mongodb.panache.ProjectionFor;
 /**
 import io.quarkus.mongodb.panache.ProjectionFor;
