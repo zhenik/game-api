@@ -64,6 +64,8 @@ public class ListQuestions extends BaseMongoEntity {
         : null);
 
     listQuestions.setQuestions(createListCommand.getQuestions());
+    listQuestions.setCreatedAt(LocalDateTime.now());
+    listQuestions.setUpdatedAt(LocalDateTime.now());
     return listQuestions;
   }
 
