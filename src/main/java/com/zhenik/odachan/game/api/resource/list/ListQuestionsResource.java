@@ -6,7 +6,9 @@ import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import com.zhenik.odachan.game.api.service.ListService;
 import com.zhenik.odachan.game.api.service.UserService;
+import java.util.List;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -28,5 +30,10 @@ public class ListQuestionsResource {
   public ListQuestions save(CreateListCommand createListCommand) {
     System.out.println("Here " + createListCommand);
     return listService.save(createListCommand);
+  }
+
+  @GET
+  public List<ListQuestions> findAll() {
+    return listService.findAll();
   }
 }
