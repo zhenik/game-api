@@ -23,7 +23,7 @@ public class UserService {
   }
 
   public User findByEmail(String email) {
-      return User.find("email", email).singleResult();
+      return userRepository.findByEmail(email);
   }
 
   public Long deleteByEmail(String email) {

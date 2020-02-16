@@ -11,18 +11,21 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("/lists")
 @Produces(value = MediaType.APPLICATION_JSON)
 @Consumes(value = MediaType.APPLICATION_JSON)
-public class ListQuestionsResource {
+public class ListsResource {
 
 
   private ListService listService;
 
-  public ListQuestionsResource(ListService listService) {
+  public ListsResource(ListService listService) {
     this.listService = listService;
   }
 
@@ -32,8 +35,18 @@ public class ListQuestionsResource {
     return listService.save(createListCommand);
   }
 
+  //@GET
+  //public List<ListQuestions> findAll() {
+  //  return listService.findAll();
+  //}
+
   @GET
-  public List<ListQuestions> findAll() {
-    return listService.findAll();
+  @QueryParam("email")
+  public Response  findByEmail(@QueryParam("email") String email) {
+    if (email == null || email.isEmpty()) {
+      return Response.status(400).build();
+    } else {
+      return Response.ok(listService.findByEmail(email)).build();
+    }
   }
 }
