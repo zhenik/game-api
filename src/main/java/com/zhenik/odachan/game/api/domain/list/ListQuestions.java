@@ -11,26 +11,9 @@ import java.util.Objects;
 import org.bson.codecs.pojo.annotations.BsonProperty;
 import org.bson.types.ObjectId;
 
-//"list_id": 1,
-//"email": "nik12@gmail.com",
-//"assigned_date": null,
-//"delivered": null,
-//"deadline": null,
-//"questions": [
-//{
-//"id": 1,
-//"text": "How old are you?",
-//"answer": null,
-//"comment": null,
-//"state": null,
-//"score": 5
-//}
-//],
-//"status": "WIP"
-
 @MongoEntity(collection = "list")
 public class ListQuestions extends BaseMongoEntity {
-  private ObjectId collectionId;
+  private ObjectId collectionId; //to remove
   @BsonProperty("assigned_to_email")
   private String assignedToEmail;
   @JsonSerialize(using = ToStringSerializer.class)
