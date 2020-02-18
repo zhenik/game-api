@@ -26,6 +26,10 @@ public class UserService {
       return userRepository.findByEmail(email);
   }
 
+  public List<User> findAllByRole(String role) {
+    return userRepository.findAllByRole(role);
+  }
+
   public Long deleteByEmail(String email) {
     return User.delete("email", email);
   }

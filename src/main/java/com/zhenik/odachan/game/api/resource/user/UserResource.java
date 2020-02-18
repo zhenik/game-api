@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -31,8 +32,13 @@ public class UserResource {
   }
 
   @GET
-  public List<User> findAll() {
-    return userService.findAll();
+  @QueryParam("role")
+  public List<User> findAll(@QueryParam("role") String role) {
+    if (role == null || role.isEmpty()) {
+      return userService.findAll();
+    } else {
+      return userService.findAllByRole(role);
+    }
   }
 
   @GET

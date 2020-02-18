@@ -4,6 +4,7 @@ import com.zhenik.odachan.game.api.domain.BaseMongoEntity;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import io.quarkus.mongodb.panache.MongoEntity;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,10 @@ public class User extends BaseMongoEntity {
 
   public static Optional<User> findByEmail(String email) {
     return find("email", email).firstResultOptional();
+  }
+
+  public static List<User> findAllByRole(UserRole role) {
+    return find("role", role.name()).list();
   }
 
   public String getName() { return name; }

@@ -1,8 +1,10 @@
 package com.zhenik.odachan.game.api.repository;
 
 import com.zhenik.odachan.game.api.domain.user.User;
+import com.zhenik.odachan.game.api.domain.user.UserRole;
 import com.zhenik.odachan.game.api.dto.commands.UserSaveCommand;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
+import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 
@@ -24,4 +26,7 @@ public class UserRepository implements PanacheMongoRepository<User> {
     return User.findByEmail(email).orElse(null);
   }
 
+  public List<User> findAllByRole(String role) {
+    return User.findAllByRole(UserRole.valueOf(role));
+  }
 }
