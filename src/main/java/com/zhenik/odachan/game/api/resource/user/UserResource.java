@@ -56,7 +56,6 @@ public class UserResource {
   @POST
   @Path("/role")
   public Response status(UserEmailRole projection) {
-    System.out.println(projection);
     Optional<UserEmailRole> userMaybe =
         User.find("email", projection.email).project(UserEmailRole.class).firstResultOptional();
     if (userMaybe.isPresent()) {
