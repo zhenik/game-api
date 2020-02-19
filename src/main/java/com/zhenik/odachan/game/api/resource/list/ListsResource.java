@@ -1,12 +1,14 @@
 package com.zhenik.odachan.game.api.resource.list;
 
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
+import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
 import com.zhenik.odachan.game.api.service.ListService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
@@ -35,6 +37,17 @@ public class ListsResource {
       return Response.status(400).build();
     } else {
       return Response.ok(listService.findByEmail(email)).build();
+    }
+  }
+
+  @GET
+  @Path("/{id}")
+  public Response findById(@PathParam("id") String id) {
+    ListQuestions listQuestions = listService.findById(id);
+    if (listQuestions != null) {
+      return Response.ok(listQuestions).build();
+    } else {
+      return Response.status(404).build();
     }
   }
 }

@@ -9,6 +9,7 @@ import com.zhenik.odachan.game.api.repository.UserRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import org.bson.types.ObjectId;
 
 @ApplicationScoped
 public class ListService {
@@ -36,5 +37,14 @@ public class ListService {
       }
     }
     return null;
+  }
+
+  public ListQuestions findById(String id) {
+    try {
+      ObjectId objectId = new ObjectId(id);
+      return listRepository.findById(objectId);
+    } catch (IllegalArgumentException e) {
+      return null;
+    }
   }
 }
