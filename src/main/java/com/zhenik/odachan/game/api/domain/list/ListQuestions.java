@@ -9,11 +9,8 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
-import org.bson.codecs.pojo.annotations.BsonProperty;
-import org.bson.types.ObjectId;
 
 @MongoEntity(collection = "list")
 public class ListQuestions extends BaseMongoEntity {
@@ -51,9 +48,9 @@ public class ListQuestions extends BaseMongoEntity {
                   final Question q = new Question();
                   q.setId(question.getId());
                   q.setText(question.getText());
-                  q.setAnswer(question.getAnswer());
+                  q.setAnswer(AnswerState.NONE);
+                  q.setScore(0);
                   q.setComment(question.getComment());
-                  q.setScore(Optional.ofNullable(question.getScore()).orElse(0));
                   return q;
                 })
             .collect(Collectors.toList())

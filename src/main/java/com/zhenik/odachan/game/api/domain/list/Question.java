@@ -3,7 +3,7 @@ package com.zhenik.odachan.game.api.domain.list;
 public class Question {
   private Integer id;
   private String text;
-  private String answer;
+  private AnswerState answer;
   private String comment;
   private Integer score;
 
@@ -13,8 +13,8 @@ public class Question {
   public void setId(Integer id) { this.id = id; }
   public String getText() { return text; }
   public void setText(String text) { this.text = text; }
-  public String getAnswer() { return answer; }
-  public void setAnswer(String answer) { this.answer = answer; }
+  public AnswerState getAnswer() { return answer; }
+  public void setAnswer(AnswerState answer) { this.answer = answer; }
   public String getComment() { return comment; }
   public void setComment(String comment) { this.comment = comment; }
   public Integer getScore() { return score; }
