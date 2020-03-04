@@ -2,7 +2,7 @@ package com.zhenik.odachan.game.api.domain.list;
 
 public enum AnswerState {
   YES("YES"),
-  NO("USER"),
+  NO("NO"),
   IRRELEVANT("IRRELEVANT"),
   NONE("NONE");
 
