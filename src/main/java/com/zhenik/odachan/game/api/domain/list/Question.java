@@ -24,7 +24,7 @@ public class Question {
     return "Question{" +
         "id=" + id +
         ", text='" + text + '\'' +
-        ", answer='" + answer + '\'' +
+        ", answer=" + answer +
         ", comment='" + comment + '\'' +
         ", score=" + score +
         '}';

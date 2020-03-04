@@ -2,10 +2,12 @@ package com.zhenik.odachan.game.api.repository;
 
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
+import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import io.quarkus.panache.common.Sort;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
+import org.bson.types.ObjectId;
 
 @ApplicationScoped
 public class ListRepository implements PanacheMongoRepository<ListQuestions> {
@@ -24,5 +26,27 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
 
   public List<ListQuestions> findListsAssignedToEmail(String email) {
     return ListQuestions.find("assignedToEmail", email).list();
+  }
+
+  public void replaceById(ObjectId objectId, UpdateListCommand updateListCommand) {
+    //ListQuestions oldList = ListQuestions.find("", email).list()
+    ListQuestions oldList = findById(objectId);
+    ListQuestions updatedList = ListQuestions.of(updateListCommand);
+    System.out.println("UpdatedList -> "+updatedList);
+
+    //oldList.setCreatedAt(updatedList.getCreatedAt());
+    //oldList.setUpdatedAt(updatedList.getUpdatedAt());
+    oldList.setQuestions(updatedList.getQuestions());
+    oldList.setDeadline(updatedList.getDeadline());
+    oldList.setDelivered(updatedList.getDelivered());
+    oldList.setState(updatedList.getState());
+    oldList.setAssignedDate(updatedList.getAssignedDate());
+    oldList.setAssignedToEmail(updatedList.getAssignedToEmail());
+
+    System.out.println("OldList -> "+oldList);
+    oldList.update();
+    //updatedList.persistOrUpdate();// replacement
+
+    //return updatedList;
   }
 }

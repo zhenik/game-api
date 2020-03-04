@@ -4,6 +4,7 @@ import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.domain.user.UserRole;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
+import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import com.zhenik.odachan.game.api.repository.ListRepository;
 import com.zhenik.odachan.game.api.repository.UserRepository;
 import java.util.List;
@@ -45,6 +46,15 @@ public class ListService {
       return listRepository.findById(objectId);
     } catch (IllegalArgumentException e) {
       return null;
+    }
+  }
+
+  public void replaceById(String id, UpdateListCommand updateListCommand) {
+    try {
+      ObjectId objectId = new ObjectId(id);
+      listRepository.replaceById(objectId, updateListCommand);
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
     }
   }
 }

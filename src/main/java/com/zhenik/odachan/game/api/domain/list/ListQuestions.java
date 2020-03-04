@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.zhenik.odachan.game.api.domain.BaseMongoEntity;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
+import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import io.quarkus.mongodb.panache.MongoEntity;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 
 @MongoEntity(collection = "list")
 public class ListQuestions extends BaseMongoEntity {
+  // todo or question: collectionId removed
+  //private ObjectId id;
   private String assignedToEmail;
   @JsonSerialize(using = ToStringSerializer.class)
   private LocalDateTime assignedDate;
@@ -38,7 +41,7 @@ public class ListQuestions extends BaseMongoEntity {
     }
     listQuestions.setDelivered(null);
     listQuestions.setDeadline(Objects.nonNull(createListCommand.getDeadline())
-        ? fromMilliseconds(createListCommand.getDeadline())
+        ? createListCommand.getDeadline()
         : null);
 
     listQuestions.setQuestions(
@@ -57,6 +60,36 @@ public class ListQuestions extends BaseMongoEntity {
     );
 
     listQuestions.setCreatedAt(LocalDateTime.now());
+    listQuestions.setUpdatedAt(LocalDateTime.now());
+    return listQuestions;
+  }
+
+  public static ListQuestions of(UpdateListCommand updateListCommand) {
+    ListQuestions listQuestions = new ListQuestions();
+
+    listQuestions.setAssignedToEmail(updateListCommand.getAssignedToEmail());
+    listQuestions.setAssignedDate(updateListCommand.getAssignedDate());
+    listQuestions.setState(updateListCommand.getState());
+    listQuestions.setDelivered(updateListCommand.getDelivered());
+
+    listQuestions.setDeadline(updateListCommand.getDeadline());
+
+    listQuestions.setQuestions(
+        updateListCommand.getQuestions().stream()
+            .map(
+                question -> {
+                  final Question q = new Question();
+                  q.setId(question.getId());
+                  q.setText(question.getText());
+                  q.setAnswer(question.getAnswer());
+                  q.setScore(question.getScore());
+                  q.setComment(question.getComment());
+                  return q;
+                })
+            .collect(Collectors.toList())
+    );
+
+    listQuestions.setCreatedAt(updateListCommand.getCreatedAt());
     listQuestions.setUpdatedAt(LocalDateTime.now());
     return listQuestions;
   }
@@ -83,5 +116,17 @@ public class ListQuestions extends BaseMongoEntity {
   private static LocalDateTime fromEpoch(Long epochSeconds) {
     return LocalDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds),
         TimeZone.getDefault().toZoneId());
+  }
+
+  @Override public String toString() {
+    return "ListQuestions{" +
+        "assignedToEmail='" + assignedToEmail + '\'' +
+        ", assignedDate=" + assignedDate +
+        ", delivered=" + delivered +
+        ", deadline=" + deadline +
+        ", questions=" + questions +
+        ", state=" + state +
+        ", id=" + id +
+        '}';
   }
 }

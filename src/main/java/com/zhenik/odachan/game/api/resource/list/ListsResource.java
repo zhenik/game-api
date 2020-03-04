@@ -1,12 +1,13 @@
 package com.zhenik.odachan.game.api.resource.list;
 
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
-import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
+import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import com.zhenik.odachan.game.api.service.ListService;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -49,5 +50,18 @@ public class ListsResource {
     } else {
       return Response.status(404).build();
     }
+  }
+
+  @PUT
+  @Path("/{id}")
+  public Response updateById(@PathParam("id") String id, UpdateListCommand updateListCommand) {
+    System.out.println(updateListCommand);
+    System.out.println("["+id+" : "+updateListCommand.getId()+"]");
+
+    if (!id.equals(updateListCommand.getId().toString())) {
+      return Response.status(400).build();
+    }
+    listService.replaceById(id, updateListCommand);
+    return Response.noContent().build();
   }
 }
