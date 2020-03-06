@@ -3,7 +3,7 @@ package com.zhenik.odachan.game.api.dto.commands;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.zhenik.odachan.game.api.domain.list.ListState;
-import com.zhenik.odachan.game.api.domain.list.Question;
+import com.zhenik.odachan.game.api.domain.list.Segment;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.bson.types.ObjectId;
@@ -21,7 +21,7 @@ public class ListCommand {
   private LocalDateTime deadline;
   @JsonSerialize(using = ToStringSerializer.class)
   private LocalDateTime delivered;
-  private List<Question> questions;
+  private List<Segment> segments;
   private ListState state;
 
   public ObjectId getId() { return id; }
@@ -38,8 +38,8 @@ public class ListCommand {
   public void setDeadline(LocalDateTime deadline) { this.deadline = deadline; }
   public LocalDateTime getDelivered() { return delivered; }
   public void setDelivered(LocalDateTime delivered) { this.delivered = delivered; }
-  public List<Question> getQuestions() { return questions; }
-  public void setQuestions(List<Question> questions) { this.questions = questions; }
+  public List<Segment> getSegments() { return segments; }
+  public void setSegments(List<Segment> segments) { this.segments = segments; }
   public ListState getState() { return state; }
   public void setState(ListState state) { this.state = state; }
 
@@ -52,7 +52,7 @@ public class ListCommand {
         ", assignedDate=" + assignedDate +
         ", deadline=" + deadline +
         ", delivered=" + delivered +
-        ", questions=" + questions +
+        ", segments=" + segments +
         ", state=" + state +
         '}';
   }

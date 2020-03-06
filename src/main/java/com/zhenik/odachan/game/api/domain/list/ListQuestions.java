@@ -24,7 +24,7 @@ public class ListQuestions extends BaseMongoEntity {
   private LocalDateTime delivered;
   @JsonSerialize(using = ToStringSerializer.class)
   private LocalDateTime deadline;
-  private List<Question> questions;
+  private List<Segment> segments;
   private ListState state;
 
   public static ListQuestions of(CreateListCommand createListCommand) {
@@ -43,25 +43,40 @@ public class ListQuestions extends BaseMongoEntity {
     listQuestions.setDeadline(Objects.nonNull(createListCommand.getDeadline())
         ? createListCommand.getDeadline()
         : null);
-
-    listQuestions.setQuestions(
-        createListCommand.getQuestions().stream()
-            .map(
-                question -> {
-                  final Question q = new Question();
-                  q.setId(question.getId());
-                  q.setText(question.getText());
-                  q.setAnswer(AnswerState.NONE);
-                  q.setScore(0);
-                  q.setComment(question.getComment());
-                  return q;
-                })
-            .collect(Collectors.toList())
-    );
+    listQuestions.setSegments(segmentsOf(createListCommand));
+    //listQuestions.setSegments(createListCommand.getSegments());
 
     listQuestions.setCreatedAt(LocalDateTime.now());
     listQuestions.setUpdatedAt(LocalDateTime.now());
     return listQuestions;
+  }
+
+  /**
+   * Method is applied only for creation.
+   * Define
+   * */
+  private static List<Segment> segmentsOf(CreateListCommand createListCommand) {
+    return createListCommand.getSegments().stream()
+        .map(segment -> {
+          Segment s = new Segment();
+          s.setId(segment.getId());
+          s.setTitle(segment.getTitle());
+          s.setDescription(segment.getDescription());
+          s.setQuestions(segment.getQuestions().stream()
+              .map(
+                  question -> {
+                    final Question q = new Question();
+                    q.setId(question.getId());
+                    q.setText(question.getText());
+                    q.setAnswer(AnswerState.NONE);
+                    q.setScore(0);
+                    q.setComment(question.getComment());
+                    return q;
+                  })
+              .collect(Collectors.toList())
+          );
+          return s;
+        }).collect(Collectors.toList());
   }
 
   public static ListQuestions of(UpdateListCommand updateListCommand) {
@@ -73,22 +88,7 @@ public class ListQuestions extends BaseMongoEntity {
     listQuestions.setDelivered(updateListCommand.getDelivered());
 
     listQuestions.setDeadline(updateListCommand.getDeadline());
-
-    listQuestions.setQuestions(
-        updateListCommand.getQuestions().stream()
-            .map(
-                question -> {
-                  final Question q = new Question();
-                  q.setId(question.getId());
-                  q.setText(question.getText());
-                  q.setAnswer(question.getAnswer());
-                  q.setScore(question.getScore());
-                  q.setComment(question.getComment());
-                  return q;
-                })
-            .collect(Collectors.toList())
-    );
-
+    listQuestions.setSegments(updateListCommand.getSegments());
     listQuestions.setCreatedAt(updateListCommand.getCreatedAt());
     listQuestions.setUpdatedAt(LocalDateTime.now());
     return listQuestions;
@@ -102,8 +102,8 @@ public class ListQuestions extends BaseMongoEntity {
   public void setDelivered(LocalDateTime delivered) { this.delivered = delivered; }
   public LocalDateTime getDeadline() { return deadline; }
   public void setDeadline(LocalDateTime deadline) { this.deadline = deadline; }
-  public List<Question> getQuestions() { return questions; }
-  public void setQuestions(List<Question> questions) { this.questions = questions; }
+  public List<Segment> getSegments() { return segments; }
+  public void setSegments(List<Segment> segments) { this.segments = segments; }
   public ListState getState() { return state; }
   public void setState(ListState state) { this.state = state; }
 
@@ -124,9 +124,8 @@ public class ListQuestions extends BaseMongoEntity {
         ", assignedDate=" + assignedDate +
         ", delivered=" + delivered +
         ", deadline=" + deadline +
-        ", questions=" + questions +
+        ", segments=" + segments +
         ", state=" + state +
-        ", id=" + id +
         '}';
   }
 }
