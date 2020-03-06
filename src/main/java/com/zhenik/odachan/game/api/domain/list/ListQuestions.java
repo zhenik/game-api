@@ -8,6 +8,7 @@ import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import io.quarkus.mongodb.panache.MongoEntity;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -51,32 +52,38 @@ public class ListQuestions extends BaseMongoEntity {
     return listQuestions;
   }
 
-  /**
-   * Method is applied only for creation.
-   * Define
+  /** Method is applied only for list creation.
+   * Ignoring any answer state, set up to NONE
+   * Also setup score of each question to `0`
    * */
   private static List<Segment> segmentsOf(CreateListCommand createListCommand) {
     return createListCommand.getSegments().stream()
         .map(segment -> {
-          Segment s = new Segment();
-          s.setId(segment.getId());
-          s.setTitle(segment.getTitle());
-          s.setDescription(segment.getDescription());
-          s.setQuestions(segment.getQuestions().stream()
-              .map(
-                  question -> {
-                    final Question q = new Question();
-                    q.setId(question.getId());
-                    q.setText(question.getText());
-                    q.setAnswer(AnswerState.NONE);
-                    q.setScore(0);
-                    q.setComment(question.getComment());
-                    return q;
-                  })
-              .collect(Collectors.toList())
-          );
-          return s;
-        }).collect(Collectors.toList());
+            Segment s = new Segment();
+            s.setId(segment.getId());
+            s.setTitle(segment.getTitle());
+            s.setDescription(segment.getDescription());
+
+            if (segment.getQuestions() == null) {
+              s.setQuestions(new ArrayList<>());
+            } else {
+              s.setQuestions(
+                  segment.getQuestions().stream()
+                      .map(
+                          question -> {
+                            final Question q = new Question();
+                            q.setId(question.getId());
+                            q.setText(question.getText());
+                            q.setAnswer(AnswerState.NONE);
+                            q.setScore(0);
+                            q.setComment(question.getComment());
+                            return q;
+                          })
+                      .collect(Collectors.toList()));
+            }
+            return s;
+          })
+        .collect(Collectors.toList());
   }
 
   public static ListQuestions of(UpdateListCommand updateListCommand) {
@@ -107,12 +114,14 @@ public class ListQuestions extends BaseMongoEntity {
   public ListState getState() { return state; }
   public void setState(ListState state) { this.state = state; }
 
+  // todo: rm later
   private static LocalDateTime fromMilliseconds(Long milliseconds) {
     return
         LocalDateTime.ofInstant(Instant.ofEpochMilli(milliseconds),
             TimeZone.getDefault().toZoneId());
   }
 
+  // todo: rm later
   private static LocalDateTime fromEpoch(Long epochSeconds) {
     return LocalDateTime.ofInstant(Instant.ofEpochSecond(epochSeconds),
         TimeZone.getDefault().toZoneId());
