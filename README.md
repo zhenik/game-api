@@ -23,44 +23,42 @@ If you want to learn more about building native executables, please consult http
 ## [entity] Question lists
 ```json
 {
-    "list_id": 1,
-    "email": "nik12@gmail.com",
-    "assigned_date": null,
+    "id": "5e62aa68dfc6547295b20c96",
+    "updatedAt": "2020-03-06T20:54:16.235",
+    "createdAt": "2020-03-06T20:54:16.235",
+    "assignedToEmail": "user@gmail.com",
+    "assignedDate": "2020-03-06T20:54:16.234",
     "delivered": null,
     "deadline": null,
-    "questions": [
+    "segments": [
         {
             "id": 1,
-            "text": "How old are you?",
-            "answer": null,
-            "comment": null,
-
-            "score": 5
-        }
-    ],
-    "state": null
-}
-```
-
-POST /lists
-```json
-{
-    "assignedToEmail": "nik12@gmail.com",
-    "questions": [
-        {
-            "id": 1,
-            "text": "How old are you?",
-            "answer": null,
-            "comment": null,
-            "score": 5
+            "title": "Some title",
+            "description": "some segment description",
+            "questions": [
+                {
+                    "id": 0,
+                    "text": "Bro?",
+                    "answer": "NONE",
+                    "comment": null,
+                    "score": 0
+                },
+                {
+                    "id": 1,
+                    "text": "Where is your home?",
+                    "answer": "NONE",
+                    "comment": null,
+                    "score": 0
+                }
+            ]
         },
         {
             "id": 2,
-            "text": "How old are you?",
-            "answer": null,
-            "comment": null,
-            "score": 5
+            "title": "Super title 2",
+            "description": "some segment description",
+            "questions": []
         }
-    ]
+    ],
+    "state": "WORK_IN_PROGRESS"
 }
 ```
