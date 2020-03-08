@@ -33,10 +33,8 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
     ListQuestions oldList = findById(objectId);
     ListQuestions updatedList = ListQuestions.of(updateListCommand);
     System.out.println("UpdatedList -> "+updatedList);
-
     //oldList.setCreatedAt(updatedList.getCreatedAt());
-    //oldList.setUpdatedAt(updatedList.getUpdatedAt());
-    oldList.setQuestions(updatedList.getQuestions());
+    oldList.setSegments(updatedList.getSegments());
     oldList.setDeadline(updatedList.getDeadline());
     oldList.setDelivered(updatedList.getDelivered());
     oldList.setState(updatedList.getState());
@@ -45,8 +43,5 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
 
     System.out.println("OldList -> "+oldList);
     oldList.update();
-    //updatedList.persistOrUpdate();// replacement
-
-    //return updatedList;
   }
 }
