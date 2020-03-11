@@ -3,9 +3,7 @@ package com.zhenik.odachan.game.api.dto;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.Question;
 import com.zhenik.odachan.game.api.domain.list.Segment;
-import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * #1 USER | Local | Calculation
@@ -13,11 +11,15 @@ import java.util.stream.Collectors;
  *   - min is 0
  *   - max is 1
  * */
-public class UserAnalyticsAnswerStatistics {
-  private Float scorePercentage;
+public class UserAnswerStatistics {
+  private Float percent;
 
-  public UserAnalyticsAnswerStatistics(List<ListQuestions> list) {
-    this.scorePercentage = calculateAnswerStatistics(list);
+  public UserAnswerStatistics(ListQuestions list) {
+    this.percent = calculateAnswerStatistics(list);
+  }
+
+  public UserAnswerStatistics(List<ListQuestions> lists) {
+    this.percent = calculateAnswerStatistics(lists);
   }
 
   private Float calculateAnswerStatistics(List<ListQuestions> list) {
@@ -39,12 +41,29 @@ public class UserAnalyticsAnswerStatistics {
     return percentage;
   }
 
-  public Float getScorePercentage() { return scorePercentage; }
-  public void setScorePercentage(Float scorePercentage) { this.scorePercentage = scorePercentage; }
+  private Float calculateAnswerStatistics(ListQuestions list) {
+    Float questionsCount = 0.0F;
+    Float totalScore = 0.0F;
+
+    for (Segment s : list.getSegments()) {
+      if (s.getQuestions() != null){
+        questionsCount += (float) s.getQuestions().size();
+        for (Question q : s.getQuestions()) {
+          totalScore += Float.valueOf(q.getScore());
+        }
+      }
+    }
+
+    Float percentage = ((totalScore/questionsCount) * 100);
+    return percentage;
+  }
+
+  public Float getScorePercentage() { return percent; }
+  public void setScorePercentage(Float percent) { this.percent = percent; }
 
   @Override public String toString() {
     return "UserAnalyticsAnswerRate{" +
-        "scorePercentage=" + scorePercentage +
+        "percent=" + percent +
         '}';
   }
 }
