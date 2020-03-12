@@ -28,6 +28,10 @@ public class ListQuestions extends BaseMongoEntity {
   private List<Segment> segments;
   private ListState state;
 
+  public ListQuestions() {
+    this.segments = new ArrayList<>();
+  }
+
   public static ListQuestions of(CreateListCommand createListCommand) {
     ListQuestions listQuestions = new ListQuestions();
 

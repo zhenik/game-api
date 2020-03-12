@@ -4,6 +4,7 @@ import com.zhenik.odachan.game.api.domain.BaseMongoEntity;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.ListState;
 import com.zhenik.odachan.game.api.dto.AnalyticsResult;
+import com.zhenik.odachan.game.api.dto.UserAnswerGroupedStatistics;
 import com.zhenik.odachan.game.api.dto.UserAnswerStatistics;
 import com.zhenik.odachan.game.api.repository.ListRepository;
 import io.quarkus.mongodb.panache.PanacheQuery;
@@ -19,8 +20,9 @@ public class AnalyticsService {
 
   /**
    * Contain
-   * #1: userAnalyticsAllListAnswers
-   * #2: userAnalyticsLastDeliveredListAnswers
+   * #1: userAllListsAnswersPercent
+   * #2: userRecentListAnswersPercent
+   * #3: userAllListGroupedAnswersCount
    */
   public AnalyticsResult getUserAnalytics(String email) {
     final PanacheQuery<ListQuestions> query =
@@ -37,19 +39,28 @@ public class AnalyticsService {
 
     ListQuestions lastDeliveredList = userLists.get(0);
 
-    UserAnswerStatistics userAnalyticsAllListAnswers = getUserAnalyticsAnswerStatistics(userLists);
+    UserAnswerStatistics userAnalyticsAllListAnswers = getUserAnswerStatistics(userLists);
     UserAnswerStatistics userAnalyticsRecentListAnswers =
-        getUserAnalyticsAnswerStatistics(lastDeliveredList);
+        getUserAnswerStatistics(lastDeliveredList);
+    UserAnswerGroupedStatistics userAnswerGroupedStatistics =
+        getUserAnswerGroupedStatistics(userLists);
 
-    return new AnalyticsResult(userAnalyticsAllListAnswers, userAnalyticsRecentListAnswers);
+    return new AnalyticsResult(
+        userAnalyticsAllListAnswers, userAnalyticsRecentListAnswers, userAnswerGroupedStatistics);
   }
 
-  private UserAnswerStatistics getUserAnalyticsAnswerStatistics(
-      List<ListQuestions> userQuestionLists) {
+  // #1 statistics: user's all list answers score `%`
+  private UserAnswerStatistics getUserAnswerStatistics(List<ListQuestions> userQuestionLists) {
     return new UserAnswerStatistics(userQuestionLists);
   }
-
-  private UserAnswerStatistics getUserAnalyticsAnswerStatistics(ListQuestions lastDeliveredList) {
+  // #2 statistics: user's all list answers score `%`
+  private UserAnswerStatistics getUserAnswerStatistics(ListQuestions lastDeliveredList) {
     return new UserAnswerStatistics(lastDeliveredList);
   }
+
+  // #3 statistics: user's all list answer states `count` by group
+  private UserAnswerGroupedStatistics getUserAnswerGroupedStatistics(List<ListQuestions> userQuestionLists) {
+    return new UserAnswerGroupedStatistics(userQuestionLists);
+  }
+
 }

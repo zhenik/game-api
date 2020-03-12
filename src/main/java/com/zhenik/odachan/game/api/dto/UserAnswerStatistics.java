@@ -45,11 +45,13 @@ public class UserAnswerStatistics {
     Float questionsCount = 0.0F;
     Float totalScore = 0.0F;
 
-    for (Segment s : list.getSegments()) {
-      if (s.getQuestions() != null){
-        questionsCount += (float) s.getQuestions().size();
-        for (Question q : s.getQuestions()) {
-          totalScore += Float.valueOf(q.getScore());
+    if (list != null) {
+      for (Segment s : list.getSegments()) {
+        if (s.getQuestions() != null) {
+          questionsCount += (float) s.getQuestions().size();
+          for (Question q : s.getQuestions()) {
+            totalScore += Float.valueOf(q.getScore());
+          }
         }
       }
     }
