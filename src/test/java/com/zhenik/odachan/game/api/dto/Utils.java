@@ -71,7 +71,6 @@ public class Utils {
     segment1.setQuestions(Arrays.asList(q1, q1, q1)); // 3
 
     listQuestions.setSegments(Arrays.asList(segment1, segment2)); // empty segment
-    System.out.println("Segment segment2 "+segment2 );
     return listQuestions;
   }
 

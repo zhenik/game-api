@@ -1,7 +1,9 @@
 package com.zhenik.odachan.game.api.resource.analytics;
 
 import com.zhenik.odachan.game.api.dto.AnalyticsResult;
+import com.zhenik.odachan.game.api.dto.EmailPercent;
 import com.zhenik.odachan.game.api.service.AnalyticsService;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -31,5 +33,12 @@ public class AnalyticsResource {
       final AnalyticsResult analytics = analyticsService.getUserAnalytics(email);
       return Response.ok(analytics).build();
     }
+  }
+
+  @GET
+  @Path("top")
+  public Response usersTop() {
+    final List<EmailPercent> usersAnalytics = analyticsService.getUsersAnalytics();
+    return Response.ok(usersAnalytics).build();
   }
 }
