@@ -1,12 +1,12 @@
 package com.zhenik.odachan.game.api.dto;
 
+import com.zhenik.odachan.game.api.domain.list.AnswerState;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.Question;
 import com.zhenik.odachan.game.api.domain.list.Segment;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Utils {
 
@@ -73,5 +73,28 @@ public class Utils {
     listQuestions.setSegments(Arrays.asList(segment1, segment2)); // empty segment
     System.out.println("Segment segment2 "+segment2 );
     return listQuestions;
+  }
+
+  public static List<ListQuestions> getList_TwoSegmentEach_TwoQuestionsEach() {
+    final ListQuestions listQuestions = new ListQuestions();
+    final Segment segment1 = new Segment();
+    final Segment segment2 = new Segment();
+
+    final Question q1 = getQuestion(AnswerState.NO);
+    final Question q2 = getQuestion(AnswerState.YES);
+    final Question q3 = getQuestion(AnswerState.IRRELEVANT);
+    final Question q4 = getQuestion(AnswerState.NONE);
+
+    segment1.setQuestions(Arrays.asList(q1,q2));
+    segment2.setQuestions(Arrays.asList(q3,q4));
+
+    listQuestions.setSegments(Arrays.asList(segment1,segment2));
+    return Arrays.asList(listQuestions, listQuestions);
+  }
+
+  static Question getQuestion(AnswerState state) {
+    final Question question = new Question();
+    question.setAnswer(state);
+    return question;
   }
 }
