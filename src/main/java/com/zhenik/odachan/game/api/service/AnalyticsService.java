@@ -14,7 +14,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -22,6 +21,10 @@ import javax.inject.Inject;
 @ApplicationScoped
 public class AnalyticsService {
   @Inject ListRepository listRepository;
+
+  // todo:
+  // 1. Add Analytics to ListQuestions (questionsAmount, score, feedback)
+  // 2. Calculate statistics when list DELIVERED only
 
   /**
    * Contain
@@ -47,16 +50,19 @@ public class AnalyticsService {
         .collect(Collectors.toList())
         .get(0);
 
+    //
+    // ListQuestions bestDeliveredList = void;
+
     // #2
-    UserAnswerStatistics userAnalyticsAllListAnswers = getUserAnswerStatistics(userLists);
+    UserAnswerStatistics userTotalDeliveredAnswersFeedback = getUserAnswerStatistics(userLists);
 
     // #1
-    UserAnswerStatistics userRecentListAnswersFeedback = getUserAnswerStatistics(lastDeliveredList);
+    UserAnswerStatistics userLastListDeliveredAnswersFeedback = getUserAnswerStatistics(lastDeliveredList);
 
     // #3
     UserAnswerGroupedStatistics userListsGroupedAnswersCount = getUserAnswerGroupedStatistics(userLists);
 
-    return new AnalyticsResult(userAnalyticsAllListAnswers, userRecentListAnswersFeedback, userListsGroupedAnswersCount);
+    return new AnalyticsResult(userTotalDeliveredAnswersFeedback, userLastListDeliveredAnswersFeedback, userListsGroupedAnswersCount);
   }
 
   /**
