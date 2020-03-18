@@ -2,40 +2,40 @@ package com.zhenik.odachan.game.api.dto;
 
 public class AnalyticsResult {
 
-  private UserAnswerStatistics userAllListsAnswersPercent;
-  private UserAnswerStatistics userRecentListAnswersPercent;
-  private UserAnswerGroupedStatistics userAllListGroupedAnswersCount;
+  private UserAnswerStatistics userTotalDeliveredAnswersFeedback;
+  private UserAnswerStatistics userLastListDeliveredAnswersFeedback;
+  private UserAnswerGroupedStatistics userListsGroupedAnswersCount;
 
   public AnalyticsResult() {}
 
   public AnalyticsResult(
-      UserAnswerStatistics userAllListsAnswersPercent,
-      UserAnswerStatistics userRecentListAnswersPercent,
-      UserAnswerGroupedStatistics userAllListGroupedAnswersCount) {
-    this.userAllListsAnswersPercent = userAllListsAnswersPercent;
-    this.userRecentListAnswersPercent = userRecentListAnswersPercent;
-    this.userAllListGroupedAnswersCount = userAllListGroupedAnswersCount;
+      UserAnswerStatistics userTotalDeliveredAnswersFeedback,
+      UserAnswerStatistics userLastListDeliveredAnswersFeedback,
+      UserAnswerGroupedStatistics userListsGroupedAnswersCount) {
+    this.userTotalDeliveredAnswersFeedback = userTotalDeliveredAnswersFeedback;
+    this.userLastListDeliveredAnswersFeedback = userLastListDeliveredAnswersFeedback;
+    this.userListsGroupedAnswersCount = userListsGroupedAnswersCount;
   }
 
-  public UserAnswerStatistics getUserAllListsAnswersPercent() {
-    return userAllListsAnswersPercent;
+  public UserAnswerStatistics getUserTotalDeliveredAnswersFeedback() {
+    return userTotalDeliveredAnswersFeedback;
   }
-  public void setUserAllListsAnswersPercent(
-      UserAnswerStatistics userAllListsAnswersPercent) {
-    this.userAllListsAnswersPercent = userAllListsAnswersPercent;
+  public void setUserTotalDeliveredAnswersFeedback(
+      UserAnswerStatistics userTotalDeliveredAnswersFeedback) {
+    this.userTotalDeliveredAnswersFeedback = userTotalDeliveredAnswersFeedback;
   }
-  public UserAnswerStatistics getUserRecentListAnswersPercent() {
-    return userRecentListAnswersPercent;
+  public UserAnswerStatistics getUserLastListDeliveredAnswersFeedback() {
+    return userLastListDeliveredAnswersFeedback;
   }
-  public void setUserRecentListAnswersPercent(
-      UserAnswerStatistics userRecentListAnswersPercent) {
-    this.userRecentListAnswersPercent = userRecentListAnswersPercent;
+  public void setUserLastListDeliveredAnswersFeedback(
+      UserAnswerStatistics userLastListDeliveredAnswersFeedback) {
+    this.userLastListDeliveredAnswersFeedback = userLastListDeliveredAnswersFeedback;
   }
-  public UserAnswerGroupedStatistics getUserAllListGroupedAnswersCount() {
-    return userAllListGroupedAnswersCount;
+  public UserAnswerGroupedStatistics getUserListsGroupedAnswersCount() {
+    return userListsGroupedAnswersCount;
   }
-  public void setUserAllListGroupedAnswersCount(
-      UserAnswerGroupedStatistics userAllListGroupedAnswersCount) {
-    this.userAllListGroupedAnswersCount = userAllListGroupedAnswersCount;
+  public void setUserListsGroupedAnswersCount(
+      UserAnswerGroupedStatistics userListsGroupedAnswersCount) {
+    this.userListsGroupedAnswersCount = userListsGroupedAnswersCount;
   }
 }

@@ -60,8 +60,8 @@ public class UserAnswerStatistics {
     return percentage;
   }
 
-  public Float getScorePercentage() { return percent; }
-  public void setScorePercentage(Float percent) { this.percent = percent; }
+  public Float getPercent() { return percent; }
+  public void setPercent(Float percent) { this.percent = percent; }
 
   @Override public String toString() {
     return "UserAnalyticsAnswerRate{" +

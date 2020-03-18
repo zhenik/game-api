@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -24,9 +25,9 @@ public class AnalyticsService {
 
   /**
    * Contain
-   * #1: userAllListsAnswersPercent
-   * #2: userRecentListAnswersPercent
-   * #3: userAllListGroupedAnswersCount
+   * #1: userTotalDeliveredAnswersFeedback
+   * #2: userLastListDeliveredAnswersFeedback && todo: userBestListDeliveredAnswersFeedback
+   * #3: userListsGroupedAnswersCount
    */
   public AnalyticsResult getUserAnalytics(String email) {
     final PanacheQuery<ListQuestions> query =
@@ -34,23 +35,28 @@ public class AnalyticsService {
 
     final List<ListQuestions> userLists =
         query.stream()
-            .sorted(Comparator.comparing(BaseMongoEntity::getUpdatedAt).reversed())
             .collect(Collectors.toList());
 
     if (userLists.size() == 0) {
       return null;
     }
 
-    ListQuestions lastDeliveredList = userLists.get(0);
+    ListQuestions lastDeliveredList = userLists
+        .stream()
+        .sorted(Comparator.comparing(BaseMongoEntity::getUpdatedAt).reversed())
+        .collect(Collectors.toList())
+        .get(0);
 
+    // #2
     UserAnswerStatistics userAnalyticsAllListAnswers = getUserAnswerStatistics(userLists);
-    UserAnswerStatistics userAnalyticsRecentListAnswers =
-        getUserAnswerStatistics(lastDeliveredList);
-    UserAnswerGroupedStatistics userAnswerGroupedStatistics =
-        getUserAnswerGroupedStatistics(userLists);
 
-    return new AnalyticsResult(
-        userAnalyticsAllListAnswers, userAnalyticsRecentListAnswers, userAnswerGroupedStatistics);
+    // #1
+    UserAnswerStatistics userRecentListAnswersFeedback = getUserAnswerStatistics(lastDeliveredList);
+
+    // #3
+    UserAnswerGroupedStatistics userListsGroupedAnswersCount = getUserAnswerGroupedStatistics(userLists);
+
+    return new AnalyticsResult(userAnalyticsAllListAnswers, userRecentListAnswersFeedback, userListsGroupedAnswersCount);
   }
 
   /**
@@ -77,7 +83,7 @@ public class AnalyticsService {
 
     // calculating
     for (Map.Entry<String,List<ListQuestions>> entry : groupedByUser.entrySet()) {
-      usersStatistics.put(entry.getKey(), new UserAnswerStatistics(entry.getValue()).getScorePercentage());
+      usersStatistics.put(entry.getKey(), new UserAnswerStatistics(entry.getValue()).getPercent());
     }
 
     // sort & get 10

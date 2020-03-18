@@ -18,7 +18,7 @@ class UserAnswerStatisticsTest {
         new UserAnswerStatistics(lists);
 
     // Assert
-    assertEquals(50, userAnswerStatistics.getScorePercentage());
+    assertEquals(50, userAnswerStatistics.getPercent());
   }
 
   @Test
@@ -30,7 +30,7 @@ class UserAnswerStatisticsTest {
     final UserAnswerStatistics userAnswerStatistics = new UserAnswerStatistics(lists);
 
     // Assert
-    assertEquals(70, userAnswerStatistics.getScorePercentage());
+    assertEquals(70, userAnswerStatistics.getPercent());
   }
 
   @Test
@@ -45,8 +45,8 @@ class UserAnswerStatisticsTest {
     UserAnswerStatistics nothing = new UserAnswerStatistics(new ListQuestions());
 
     // Assert
-    assertEquals(100, hundredPercents.getScorePercentage());
-    assertEquals(0, zeroPercents.getScorePercentage());
+    assertEquals(100, hundredPercents.getPercent());
+    assertEquals(0, zeroPercents.getPercent());
   }
 
   // @Test
