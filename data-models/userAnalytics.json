@@ -1,5 +1,5 @@
 {
-  "listsFeedback": {
+  "twoListsFeedback": {
     "last": {
       "questions": 0,
       "score": 0,
@@ -23,7 +23,7 @@
       }
     }
   },
-  "allDeliveredList": {
+  "allListsFeedback": {
     "questions": 7,
     "score": 0,
     "feedback": 75.0,

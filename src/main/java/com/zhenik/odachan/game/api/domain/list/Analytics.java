@@ -41,6 +41,10 @@ public class Analytics {
     }};
   }
 
+  public void addToGroup(AnswerState answerState) {
+    this.group.put(answerState.toString(), this.group.get(answerState.toString()) + 1);
+  }
+
   public Integer getQuestions() { return questions; }
   public void setQuestions(Integer questions) { this.questions = questions; }
   public Integer getScore() { return score; }

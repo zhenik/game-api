@@ -77,7 +77,7 @@ If you want to learn more about building native executables, please consult http
 ## [dto] User analytics
 ```json
 {
-  "listsFeedback": {
+  "twoListsFeedback": {
     "last": {
       "questions": 0,
       "score": 0,
@@ -101,7 +101,7 @@ If you want to learn more about building native executables, please consult http
       }
     }
   },
-  "allDeliveredList": {
+  "allListsFeedback": {
     "questions": 7,
     "score": 0,
     "feedback": 75.0,
