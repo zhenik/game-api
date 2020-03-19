@@ -9,7 +9,6 @@ import com.zhenik.odachan.game.api.domain.list.Segment;
 import com.zhenik.odachan.game.api.dto.EmailPercent;
 import com.zhenik.odachan.game.api.dto.TwoListsFeedbackDto;
 import com.zhenik.odachan.game.api.dto.UserAnalyticsDto;
-import com.zhenik.odachan.game.api.dto.UserAnswerGroupedStatistics;
 import com.zhenik.odachan.game.api.dto.UserAnswerStatistics;
 import com.zhenik.odachan.game.api.repository.ListRepository;
 import io.quarkus.mongodb.panache.PanacheQuery;
@@ -83,20 +82,10 @@ public class AnalyticsService {
     return analytics;
   }
 
-
-
-
-
-
-
-
-
-
   /**
-   * todo:  }===|==>---- crutch
-   * todo: test it
+   * }===|==>---- crutch
+   * todo: reuse buildAllListAnalytics()
    * Bad performance relates to database size
-   *
    * Contain
    * #4: top10 users based on user's all list answers score
    */
@@ -116,6 +105,7 @@ public class AnalyticsService {
 
     // calculating
     for (Map.Entry<String,List<ListQuestions>> entry : groupedByUser.entrySet()) {
+      // todo: optimise here
       usersStatistics.put(entry.getKey(), new UserAnswerStatistics(entry.getValue()).getPercent());
     }
 
@@ -128,20 +118,5 @@ public class AnalyticsService {
         .collect(Collectors.toList());
 
     return sortedTopTen;
-  }
-
-
-  // #1 statistics: user's all list answers score `%`
-  private UserAnswerStatistics getUserAnswerStatistics(List<ListQuestions> userQuestionLists) {
-    return new UserAnswerStatistics(userQuestionLists);
-  }
-  // #2 statistics: user's all list answers score `%`
-  private UserAnswerStatistics getUserAnswerStatistics(ListQuestions lastDeliveredList) {
-    return new UserAnswerStatistics(lastDeliveredList);
-  }
-
-  // #3 statistics: user's all list answer states `count` by group
-  private UserAnswerGroupedStatistics getUserAnswerGroupedStatistics(List<ListQuestions> userQuestionLists) {
-    return new UserAnswerGroupedStatistics(userQuestionLists);
   }
 }
