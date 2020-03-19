@@ -1,6 +1,7 @@
 package com.zhenik.odachan.game.api.repository;
 
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
+import com.zhenik.odachan.game.api.domain.list.ListState;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
 import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
@@ -29,7 +30,6 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
   }
 
   public void replaceById(ObjectId objectId, UpdateListCommand updateListCommand) {
-    //ListQuestions oldList = ListQuestions.find("", email).list()
     ListQuestions oldList = findById(objectId);
     ListQuestions updatedList = ListQuestions.of(updateListCommand);
     System.out.println("UpdatedList -> "+updatedList);
@@ -41,6 +41,9 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
     oldList.setAssignedDate(updatedList.getAssignedDate());
     oldList.setAssignedToEmail(updatedList.getAssignedToEmail());
 
+    if (updateListCommand.getState().equals(ListState.DELIVERED)) {
+      oldList.setAnalytics(updatedList.getAnalytics());
+    }
     System.out.println("OldList -> "+oldList);
     oldList.update();
   }

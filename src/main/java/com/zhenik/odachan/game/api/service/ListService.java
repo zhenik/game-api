@@ -1,6 +1,7 @@
 package com.zhenik.odachan.game.api.service;
 
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
+import com.zhenik.odachan.game.api.domain.list.ListState;
 import com.zhenik.odachan.game.api.domain.user.User;
 import com.zhenik.odachan.game.api.domain.user.UserRole;
 import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
@@ -52,9 +53,19 @@ public class ListService {
   public void replaceById(String id, UpdateListCommand updateListCommand) {
     try {
       ObjectId objectId = new ObjectId(id);
+
+      if (updateListCommand.getState().equals(ListState.DELIVERED)) {
+        // analytics calculation
+        System.out.println("CALCULATION");
+      } else {
+        // nothing
+      }
+
       listRepository.replaceById(objectId, updateListCommand);
     } catch (IllegalArgumentException e) {
       e.printStackTrace();
     }
   }
+
+
 }
