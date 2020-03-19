@@ -43,7 +43,10 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
 
     if (updateListCommand.getState().equals(ListState.DELIVERED)) {
       oldList.setAnalytics(updatedList.getAnalytics());
+    } else {
+      oldList.setAnalytics(oldList.getAnalytics());
     }
+
     System.out.println("OldList -> "+oldList);
     oldList.update();
   }
