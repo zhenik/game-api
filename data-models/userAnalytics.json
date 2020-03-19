@@ -1,0 +1,37 @@
+{
+  "listsFeedback": {
+    "last": {
+      "questions": 0,
+      "score": 0,
+      "feedback": 0.0,
+      "group": {
+        "NO": 0,
+        "YES": 0,
+        "IRRELEVANT": 0,
+        "NONE": 0
+      }
+    },
+    "best": {
+      "questions": 0,
+      "score": 0,
+      "feedback": 0.0,
+      "group": {
+        "NO": 0,
+        "YES": 0,
+        "IRRELEVANT": 0,
+        "NONE": 0
+      }
+    }
+  },
+  "allDeliveredList": {
+    "questions": 7,
+    "score": 0,
+    "feedback": 75.0,
+    "group": {
+      "IRRELEVANT": 2,
+      "NO": 1,
+      "YES": 3,
+      "NONE": 1
+    }
+  }
+}
