@@ -1,6 +1,6 @@
 package com.zhenik.odachan.game.api.resource.analytics;
 
-import com.zhenik.odachan.game.api.dto.AnalyticsResult;
+import com.zhenik.odachan.game.api.dto.UserAnalyticsDto;
 import com.zhenik.odachan.game.api.dto.EmailPercent;
 import com.zhenik.odachan.game.api.service.AnalyticsService;
 import java.util.List;
@@ -30,7 +30,7 @@ public class AnalyticsResource {
     if (email == null || email.isEmpty()) {
       return Response.status(400).build();
     } else {
-      final AnalyticsResult analytics = analyticsService.getUserAnalytics(email);
+      final UserAnalyticsDto analytics = analyticsService.getUserAnalytics(email);
       return Response.ok(analytics).build();
     }
   }

@@ -55,9 +55,8 @@ public class ListsResource {
   @PUT
   @Path("/{id}")
   public Response updateById(@PathParam("id") String id, UpdateListCommand updateListCommand) {
-    System.out.println(updateListCommand);
-    System.out.println("["+id+" : "+updateListCommand.getId()+"]");
-
+    //System.out.println(updateListCommand);
+    //System.out.println("["+id+" : "+updateListCommand.getId()+"]");
     if (!id.equals(updateListCommand.getId().toString())) {
       return Response.status(400).build();
     }

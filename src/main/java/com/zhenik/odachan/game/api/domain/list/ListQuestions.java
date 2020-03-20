@@ -27,6 +27,7 @@ public class ListQuestions extends BaseMongoEntity {
   private LocalDateTime deadline;
   private List<Segment> segments;
   private ListState state;
+  private Analytics analytics;
 
   public ListQuestions() {
     this.segments = new ArrayList<>();
@@ -53,6 +54,7 @@ public class ListQuestions extends BaseMongoEntity {
 
     listQuestions.setCreatedAt(LocalDateTime.now());
     listQuestions.setUpdatedAt(LocalDateTime.now());
+    listQuestions.setAnalytics(Analytics.empty());
     return listQuestions;
   }
 
@@ -102,6 +104,7 @@ public class ListQuestions extends BaseMongoEntity {
     listQuestions.setSegments(updateListCommand.getSegments());
     listQuestions.setCreatedAt(updateListCommand.getCreatedAt());
     listQuestions.setUpdatedAt(LocalDateTime.now());
+    listQuestions.setAnalytics(updateListCommand.getAnalytics());
     return listQuestions;
   }
 
@@ -117,6 +120,8 @@ public class ListQuestions extends BaseMongoEntity {
   public void setSegments(List<Segment> segments) { this.segments = segments; }
   public ListState getState() { return state; }
   public void setState(ListState state) { this.state = state; }
+  public Analytics getAnalytics() { return analytics; }
+  public void setAnalytics(Analytics analytics) { this.analytics = analytics; }
 
   // todo: rm later
   private static LocalDateTime fromMilliseconds(Long milliseconds) {
@@ -139,6 +144,8 @@ public class ListQuestions extends BaseMongoEntity {
         ", deadline=" + deadline +
         ", segments=" + segments +
         ", state=" + state +
+        ", analytics=" + analytics +
+        ", id=" + id +
         '}';
   }
 }

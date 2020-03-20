@@ -1,11 +1,14 @@
 package com.zhenik.odachan.game.api.service;
 
 import com.zhenik.odachan.game.api.domain.BaseMongoEntity;
+import com.zhenik.odachan.game.api.domain.list.Analytics;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.ListState;
-import com.zhenik.odachan.game.api.dto.AnalyticsResult;
+import com.zhenik.odachan.game.api.domain.list.Question;
+import com.zhenik.odachan.game.api.domain.list.Segment;
 import com.zhenik.odachan.game.api.dto.EmailPercent;
-import com.zhenik.odachan.game.api.dto.UserAnswerGroupedStatistics;
+import com.zhenik.odachan.game.api.dto.TwoListsFeedbackDto;
+import com.zhenik.odachan.game.api.dto.UserAnalyticsDto;
 import com.zhenik.odachan.game.api.dto.UserAnswerStatistics;
 import com.zhenik.odachan.game.api.repository.ListRepository;
 import io.quarkus.mongodb.panache.PanacheQuery;
@@ -22,54 +25,67 @@ import javax.inject.Inject;
 public class AnalyticsService {
   @Inject ListRepository listRepository;
 
-  // todo:
-  // 1. Add Analytics to ListQuestions (questionsAmount, score, feedback)
-  // 2. Calculate statistics when list DELIVERED only
-
-  /**
-   * Contain
-   * #1: userTotalDeliveredAnswersFeedback
-   * #2: userLastListDeliveredAnswersFeedback && todo: userBestListDeliveredAnswersFeedback
-   * #3: userListsGroupedAnswersCount
-   */
-  public AnalyticsResult getUserAnalytics(String email) {
+  public UserAnalyticsDto getUserAnalytics(String email) {
     final PanacheQuery<ListQuestions> query =
         ListQuestions.find("assignedToEmail = ?1 and state = ?2", email, ListState.DELIVERED);
 
-    final List<ListQuestions> userLists =
-        query.stream()
-            .collect(Collectors.toList());
+    final List<ListQuestions> userLists = query.stream().collect(Collectors.toList());
 
     if (userLists.size() == 0) {
       return null;
     }
 
-    ListQuestions lastDeliveredList = userLists
-        .stream()
-        .sorted(Comparator.comparing(BaseMongoEntity::getUpdatedAt).reversed())
-        .collect(Collectors.toList())
-        .get(0);
+    final TwoListsFeedbackDto twoListsFeedback = buildTwoListAnalytics(userLists);
+    final Analytics allListAnalytics = buildAllListAnalytics(userLists);
 
-    //
-    // ListQuestions bestDeliveredList = void;
+    final UserAnalyticsDto userAnalyticsDto = new UserAnalyticsDto();
+    userAnalyticsDto.setAllListsFeedback(allListAnalytics);
+    userAnalyticsDto.setTwoListsFeedback(twoListsFeedback);
 
-    // #2
-    UserAnswerStatistics userTotalDeliveredAnswersFeedback = getUserAnswerStatistics(userLists);
+    return userAnalyticsDto;
+  }
 
-    // #1
-    UserAnswerStatistics userLastListDeliveredAnswersFeedback = getUserAnswerStatistics(lastDeliveredList);
+  private TwoListsFeedbackDto buildTwoListAnalytics(List<ListQuestions> userLists) {
+    ListQuestions lastDeliveredList =
+        userLists.stream()
+            .sorted(Comparator.comparing(BaseMongoEntity::getUpdatedAt).reversed())
+            .collect(Collectors.toList())
+            .get(0);
+    final Analytics last = lastDeliveredList.getAnalytics();
 
-    // #3
-    UserAnswerGroupedStatistics userListsGroupedAnswersCount = getUserAnswerGroupedStatistics(userLists);
+    ListQuestions bestDeliveredList =
+        userLists.stream()
+            .sorted(
+                Comparator.comparing((ListQuestions l) -> l.getAnalytics().getScore()).reversed())
+            .collect(Collectors.toList())
+            .get(0);
 
-    return new AnalyticsResult(userTotalDeliveredAnswersFeedback, userLastListDeliveredAnswersFeedback, userListsGroupedAnswersCount);
+    final TwoListsFeedbackDto twoListsFeedbackDto = new TwoListsFeedbackDto();
+    twoListsFeedbackDto.setLast(lastDeliveredList.getAnalytics());
+    twoListsFeedbackDto.setBest(bestDeliveredList.getAnalytics());
+    return twoListsFeedbackDto;
+  }
+
+  private Analytics buildAllListAnalytics(List<ListQuestions> userLists) {
+    final Analytics analytics = Analytics.empty();
+    for (ListQuestions list : userLists) {
+      for (Segment segment : list.getSegments()) {
+        for (Question question : segment.getQuestions()) {
+          analytics.setQuestions(analytics.getQuestions() + 1);
+          analytics.setScore(analytics.getScore() + question.getScore());
+          analytics.addToGroup(question.getAnswer());
+        }
+      }
+    }
+    Float feedback = ((Float.valueOf(analytics.getScore()) / analytics.getQuestions()) * 100);
+    analytics.setFeedback(feedback);
+    return analytics;
   }
 
   /**
-   * todo:  }===|==>---- crutch
-   * todo: test it
+   * }===|==>---- crutch
+   * todo: reuse buildAllListAnalytics()
    * Bad performance relates to database size
-   *
    * Contain
    * #4: top10 users based on user's all list answers score
    */
@@ -89,6 +105,7 @@ public class AnalyticsService {
 
     // calculating
     for (Map.Entry<String,List<ListQuestions>> entry : groupedByUser.entrySet()) {
+      // todo: optimise here
       usersStatistics.put(entry.getKey(), new UserAnswerStatistics(entry.getValue()).getPercent());
     }
 
@@ -102,66 +119,4 @@ public class AnalyticsService {
 
     return sortedTopTen;
   }
-
-
-  // #1 statistics: user's all list answers score `%`
-  private UserAnswerStatistics getUserAnswerStatistics(List<ListQuestions> userQuestionLists) {
-    return new UserAnswerStatistics(userQuestionLists);
-  }
-  // #2 statistics: user's all list answers score `%`
-  private UserAnswerStatistics getUserAnswerStatistics(ListQuestions lastDeliveredList) {
-    return new UserAnswerStatistics(lastDeliveredList);
-  }
-
-  // #3 statistics: user's all list answer states `count` by group
-  private UserAnswerGroupedStatistics getUserAnswerGroupedStatistics(List<ListQuestions> userQuestionLists) {
-    return new UserAnswerGroupedStatistics(userQuestionLists);
-  }
-
-  //public static void main(String[] args) {
-  //
-  //  final ListQuestions listQuestions1 = new ListQuestions();
-  //  final ListQuestions listQuestions2 = new ListQuestions();
-  //  final Segment segment1 = new Segment();
-  //  final Segment segment2 = new Segment();
-  //
-  //  final Question q1 = new Question();
-  //  final Question q2 = new Question();
-  //  q1.setScore(1);
-  //  q2.setScore(0);
-  //
-  //  segment1.setQuestions(Arrays.asList(q2, q1, q1)); // 3
-  //  segment2.setQuestions(Arrays.asList(q2, q1)); // 2
-  //
-  //  listQuestions1.setSegments(Arrays.asList(segment1, segment2));
-  //  listQuestions1.setAssignedToEmail("zhenik");
-  //
-  //  listQuestions2.setSegments(Arrays.asList(segment1, segment2, segment2));
-  //  listQuestions2.setAssignedToEmail("chan");
-  //  List<ListQuestions> lists = Arrays.asList(listQuestions1, listQuestions1, listQuestions2);
-  //
-  //
-  //  Map<String, List<ListQuestions>> groupedByUser = new HashMap<>();
-  //  Map<String, Float> usersStatistics = new HashMap<>();
-  //
-  //  for (ListQuestions l : lists) {
-  //    final String email = l.getAssignedToEmail();
-  //    final List<ListQuestions> grouped = groupedByUser.getOrDefault(email, new ArrayList<>());
-  //    grouped.add(l);
-  //    groupedByUser.put(email, grouped);
-  //  }
-  //
-  //  //System.out.println(groupedByUser);
-  //
-  //  for (Map.Entry<String,List<ListQuestions>> entry : groupedByUser.entrySet()) {
-  //    usersStatistics.put(entry.getKey(), new UserAnswerStatistics(entry.getValue()).getScorePercentage());
-  //  }
-  //
-  //  final Map<String, Float> collect = usersStatistics.entrySet().stream()
-  //      .sorted(Map.Entry.<String, Float>comparingByValue().reversed())
-  //      .limit(10)
-  //      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-  //
-  //  System.out.println(collect);
-  //}
 }
