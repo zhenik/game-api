@@ -42,6 +42,23 @@ public class ListsResource {
   }
 
   @GET
+  @Path("/latest")
+  @QueryParam("email")
+  public Response findLatestUserList(@QueryParam("email") String email) {
+    if (email == null || email.isEmpty()) {
+      return Response.status(400).build();
+    }
+    else {
+      ListQuestions latestUserList = listService.findLatestUserList(email);
+      if (latestUserList != null) {
+        return Response.ok(latestUserList).build();
+      } else {
+        return Response.status(404).build();
+      }
+    }
+  }
+
+  @GET
   @Path("/{id}")
   public Response findById(@PathParam("id") String id) {
     ListQuestions listQuestions = listService.findById(id);

@@ -6,7 +6,9 @@ import com.zhenik.odachan.game.api.dto.commands.CreateListCommand;
 import com.zhenik.odachan.game.api.dto.commands.UpdateListCommand;
 import io.quarkus.mongodb.panache.PanacheMongoRepository;
 import io.quarkus.panache.common.Sort;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import javax.enterprise.context.ApplicationScoped;
 import org.bson.types.ObjectId;
 
@@ -49,5 +51,16 @@ public class ListRepository implements PanacheMongoRepository<ListQuestions> {
 
     System.out.println("OldList -> "+oldList);
     oldList.update();
+  }
+
+  public ListQuestions findLatestListAssignedToEmail(String email) {
+    List<ListQuestions> lists = ListQuestions.find("assignedToEmail", email).list();
+
+    final Optional<ListQuestions> recentList = lists.stream()
+        .filter(l -> l.getState() == ListState.WORK_IN_PROGRESS)
+        .sorted(Comparator.comparing(ListQuestions::getAssignedDate).reversed())
+        .findFirst();
+
+    return recentList.orElse(null);
   }
 }

@@ -45,6 +45,16 @@ public class ListService {
     return null;
   }
 
+  public ListQuestions findLatestUserList(String email) {
+    User byEmail = userRepository.findByEmail(email);
+    if (byEmail != null) {
+      if (byEmail.getRole() != UserRole.ADMIN) {
+        return listRepository.findLatestListAssignedToEmail(email);
+      }
+    }
+    return null;
+  }
+
   public ListQuestions findById(String id) {
     try {
       ObjectId objectId = new ObjectId(id);
