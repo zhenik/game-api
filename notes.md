@@ -29,3 +29,8 @@ docker build -f src/docker/Dockerfile.native -t game-api .
 # create container our of image
 docker run -i --rm -p 8080:8080 game-api
 ```
+
+## OSx specific
+```bash
+xattr -r -d com.apple.quarantine /Library/Java/JavaVirtualMachines/graalvm
+```
