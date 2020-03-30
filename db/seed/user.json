@@ -1,0 +1,20 @@
+[
+  {
+    "_id": {
+      "$oid": "5e8240a1d498153747ca3f6e"
+    },
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1585594529799"
+      }
+    },
+    "email": "changiz@gmail.com",
+    "name": "Changiz",
+    "role": "USER",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1585594529799"
+      }
+    }
+  }
+]

@@ -1,0 +1,133 @@
+[
+  {
+    "_id": {
+      "$oid": "5e8240b0d498153747ca3f6f"
+    },
+    "analytics": {
+      "feedback": {
+        "$numberInt": "0"
+      },
+      "group": {
+        "NO": {
+          "$numberInt": "0"
+        },
+        "YES": {
+          "$numberInt": "0"
+        },
+        "IRRELEVANT": {
+          "$numberInt": "0"
+        },
+        "NONE": {
+          "$numberInt": "0"
+        }
+      },
+      "questions": {
+        "$numberInt": "0"
+      },
+      "score": {
+        "$numberInt": "0"
+      }
+    },
+    "assignedDate": {
+      "$date": {
+        "$numberLong": "1585594544550"
+      }
+    },
+    "assignedToEmail": "template",
+    "createdAt": {
+      "$date": {
+        "$numberLong": "1585594544550"
+      }
+    },
+    "deadline": {
+      "$date": {
+        "$numberLong": "1585145067881"
+      }
+    },
+    "segments": [
+      {
+        "_id": {
+          "$numberInt": "0"
+        },
+        "description": "some segment description",
+        "questions": [
+          {
+            "_id": {
+              "$numberInt": "0"
+            },
+            "answer": "NONE",
+            "score": {
+              "$numberInt": "0"
+            },
+            "text": "Bro?"
+          },
+          {
+            "_id": {
+              "$numberInt": "1"
+            },
+            "answer": "NONE",
+            "score": {
+              "$numberInt": "0"
+            },
+            "text": "You?"
+          }
+        ],
+        "title": "Super puper masa faka list"
+      },
+      {
+        "_id": {
+          "$numberInt": "1"
+        },
+        "description": "some segment description",
+        "questions": [
+          {
+            "_id": {
+              "$numberInt": "0"
+            },
+            "answer": "NONE",
+            "score": {
+              "$numberInt": "0"
+            },
+            "text": "Lol?"
+          }
+        ],
+        "title": "Super title 2"
+      },
+      {
+        "_id": {
+          "$numberInt": "2"
+        },
+        "description": "some segment description",
+        "questions": [
+          {
+            "_id": {
+              "$numberInt": "0"
+            },
+            "answer": "NONE",
+            "score": {
+              "$numberInt": "0"
+            },
+            "text": "Lol?"
+          },
+          {
+            "_id": {
+              "$numberInt": "1"
+            },
+            "answer": "NONE",
+            "score": {
+              "$numberInt": "0"
+            },
+            "text": "Lol?"
+          }
+        ],
+        "title": "Super title 2"
+      }
+    ],
+    "state": "WORK_IN_PROGRESS",
+    "updatedAt": {
+      "$date": {
+        "$numberLong": "1585594544550"
+      }
+    }
+  }
+]
