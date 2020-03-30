@@ -8,3 +8,14 @@ services:
       MONGO_INITDB_DATABASE: app
     ports:
     - 27017:27017
+
+  gameapi:
+    image: ebanina
+    command: [
+      "./application",
+      "-Dquarkus.http.host=0.0.0.0",
+      "-Dquarkus.mongodb.connection-string=mongodb://root:example@mongo:27017",
+      "-Dquarkus.mongodb.database=app"
+    ]
+    ports:
+    - 8080:8080
