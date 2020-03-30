@@ -9,6 +9,15 @@ services:
     ports:
     - 27017:27017
 
+  mongo-seed:
+    image: mongo:4.2
+    restart: no
+    command: mongoimport -h mongo -d app -c MyDummyCollection --authenticationDatabase admin --type=json --file=/tmp/init.json --jsonArray -u root -p example
+    volumes:
+      - "${PWD}/db-seed/init.json:/tmp/init.json"
+    depends_on:
+      - mongo
+
   gameapi:
     image: ebanina
     command: [
@@ -18,4 +27,7 @@ services:
       "-Dquarkus.mongodb.database=app"
     ]
     ports:
-    - 8080:8080
+      - 8080:8080
+    depends_on:
+      - mongo
+      - mongo-seed
