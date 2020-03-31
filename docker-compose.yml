@@ -1,4 +1,4 @@
-version: "3.1"
+version: "3.4"
 services:
   mongo:
     image: mongo:4.2
@@ -6,17 +6,13 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
       MONGO_INITDB_DATABASE: app
-    ports:
-    - 27017:27017
-
-  mongo-seed:
-    image: mongo:4.2
-    restart: no
-    command: mongoimport -h mongo -d app -c MyDummyCollection --authenticationDatabase admin --type=json --file=/tmp/init.json --jsonArray -u root -p example
     volumes:
-      - "${PWD}/db-seed/init.json:/tmp/init.json"
-    depends_on:
-      - mongo
+# todo - "${PWD}/db/init.js:/docker-entrypoint-initdb.d/init.mongo.js:ro"
+      - "mongo-data:/data/db"
+    ports:
+      - 27017:27017
+    networks:
+      - backend
 
   gameapi:
     image: ebanina
@@ -28,6 +24,14 @@ services:
     ]
     ports:
       - 8080:8080
+    networks:
+      - backend
     depends_on:
       - mongo
-      - mongo-seed
+
+volumes:
+  mongo-data:
+    name: "mongo-data"
+networks:
+  backend:
+  frontend:

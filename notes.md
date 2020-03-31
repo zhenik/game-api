@@ -41,3 +41,5 @@ xattr -r -d com.apple.quarantine /Library/Java/JavaVirtualMachines/graalvm
 # make dump and store it on local host file system 
 docker exec some-mongo sh -c 'exec mongodump -d <database_name> --archive' > /some/path/on/your/host/all-collections.archive
 ```
+
+[Reference to init.js](https://docs.mongodb.com/manual/tutorial/write-scripts-for-the-mongo-shell/)
