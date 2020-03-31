@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
-
   <groupId>com.zhenik.odachan</groupId>
   <artifactId>game-api</artifactId>
   <version>1.0-SNAPSHOT</version>
-
   <properties>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
@@ -21,7 +18,6 @@
     <quarkus.platform.version>1.2.0.Final</quarkus.platform.version>
     <surefire-plugin.version>2.22.1</surefire-plugin.version>
   </properties>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -33,8 +29,6 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
-
-
   <dependencies>
     <dependency>
       <groupId>io.quarkus</groupId>
@@ -90,6 +84,25 @@
           </systemProperties>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>com.google.cloud.tools</groupId>
+        <artifactId>jib-maven-plugin</artifactId>
+        <version>2.1.0</version>
+        <configuration>
+          <to>
+            <image>quarkus-with-jib</image>
+          </to>
+          <container>
+            <mainClass>io.quarkus.runner.GeneratedMain</mainClass>
+          </container>
+          <containerizingMode>packaged</containerizingMode>
+          <extraDirectories>
+            <paths>
+              <path>${project.build.directory}/extra-directory/</path>
+            </paths>
+          </extraDirectories>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <profiles>
@@ -113,9 +126,7 @@
                 </goals>
                 <configuration>
                   <systemProperties>
-                    <native.image.path>
-                      ${project.build.directory}/${project.build.finalName}-runner
-                    </native.image.path>
+                    <native.image.path>${project.build.directory}/${project.build.finalName}-runner</native.image.path>
                   </systemProperties>
                 </configuration>
               </execution>
@@ -128,5 +139,4 @@
       </properties>
     </profile>
   </profiles>
-
 </project>
