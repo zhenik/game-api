@@ -15,7 +15,7 @@ services:
       - backend
 
   gameapi:
-    image: ebanina
+    image: zhenik/ocn-backend:1.0
     command: [
       "./application",
       "-Dquarkus.http.host=0.0.0.0",
