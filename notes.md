@@ -24,10 +24,10 @@ java -jar target/getting-started-1.0-SNAPSHOT-runner.jar
 
 ```bash
 # build docker img with compiled binary 
-docker build -f src/docker/Dockerfile.native -t game-api .
+docker build -f src/docker/Dockerfile.native -t zhenik/ocn-backend:1.01 .
 
 # create container our of image
-docker run -i --rm -p 8080:8080 game-api
+docker run -i --rm -p 8080:8080 zhenik/ocn-backend:1.01
 ```
 
 ## GraalVM - OSx specific
