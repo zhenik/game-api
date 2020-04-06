@@ -1,7 +1,9 @@
 package com.zhenik.odachan.game.api.dto;
 
 import com.zhenik.odachan.game.api.domain.list.Analytics;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 
+@RegisterForReflection
 public class UserAnalyticsDto {
   private TwoListsFeedbackDto twoListsFeedback;
   private Analytics allListsFeedback;

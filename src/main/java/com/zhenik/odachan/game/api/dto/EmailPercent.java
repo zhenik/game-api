@@ -1,5 +1,8 @@
 package com.zhenik.odachan.game.api.dto;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
+
+@RegisterForReflection
 public class EmailPercent {
   private String email;
   private Float percent;

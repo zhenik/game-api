@@ -4,11 +4,12 @@ import com.zhenik.odachan.game.api.domain.list.AnswerState;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.Question;
 import com.zhenik.odachan.game.api.domain.list.Segment;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+@RegisterForReflection
 public class UserAnswerGroupedStatistics {
   private Map<AnswerState, Integer> group;
 

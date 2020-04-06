@@ -3,6 +3,7 @@ package com.zhenik.odachan.game.api.dto;
 import com.zhenik.odachan.game.api.domain.list.ListQuestions;
 import com.zhenik.odachan.game.api.domain.list.Question;
 import com.zhenik.odachan.game.api.domain.list.Segment;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.List;
 
 /**
@@ -11,6 +12,7 @@ import java.util.List;
  *   - min is 0
  *   - max is 1
  * */
+@RegisterForReflection
 public class UserAnswerStatistics {
   private Float percent;
 

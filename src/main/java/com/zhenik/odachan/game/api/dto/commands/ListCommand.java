@@ -4,10 +4,12 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.zhenik.odachan.game.api.domain.list.ListState;
 import com.zhenik.odachan.game.api.domain.list.Segment;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.bson.types.ObjectId;
 
+//@RegisterForReflection
 public class ListCommand {
   private ObjectId id;
   private String assignedToEmail;
