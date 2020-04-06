@@ -30,15 +30,24 @@ public class AnalyticsResource {
     if (email == null || email.isEmpty()) {
       return Response.status(400).build();
     } else {
-      final UserAnalyticsDto analytics = analyticsService.getUserAnalytics(email);
-      return Response.ok(analytics).build();
+      UserAnalyticsDto analytics = analyticsService.getUserAnalytics(email);
+      if (analytics != null) {
+        return Response.ok(analytics).build();
+      } else {
+        return Response.status(404).build();
+      }
     }
   }
 
   @GET
   @Path("top")
   public Response usersTop() {
-    final List<EmailPercent> usersAnalytics = analyticsService.getUsersAnalytics();
-    return Response.ok(usersAnalytics).build();
+    List<EmailPercent> usersAnalytics = analyticsService.getUsersAnalytics();
+    if (usersAnalytics != null) {
+      return Response.ok(usersAnalytics).build();
+    } else {
+      return Response.status(404).build();
+    }
+
   }
 }

@@ -15,12 +15,18 @@ services:
       - backend
 
   gameapi:
-    image: zhenik/ocn-backend:1.0
+    image: zhenik/ocn-backend:1.01
     command: [
       "./application",
       "-Dquarkus.http.host=0.0.0.0",
       "-Dquarkus.mongodb.connection-string=mongodb://root:example@mongo:27017",
-      "-Dquarkus.mongodb.database=app"
+      "-Dquarkus.mongodb.database=app",
+      "-Dquarkus.http.cors=true",
+      "-Dquarkus.http.cors.methods=GET,PUT,POST",
+      "-Dquarkus.http.proxy-address-forwarding=true",
+      "-Dquarkus.http.allow-forwarded=true",
+      "-Dquarkus.http.cors.access-control-max-age=24H",
+      "-Dquarkus.http.cors.origins=http://localhost:3000,http://localhost,http://54.171.115.231:3000,http://54.171.115.231"
     ]
     ports:
       - 8080:8080
